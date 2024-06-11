@@ -1,7 +1,7 @@
 <template>
   <Header/>
   <div class="container">
-    <Balance :total="+total" />
+    <Balance :total="+total" :cashtotal="+cashtotal" />
     <IncomeExpenses :income="+income" :expenses="+expenses"/>
     <TransactionList :transactions="transactions"
     @transactionDeleted="handleTransactionDeleted" />
@@ -16,7 +16,7 @@
 
 import Header from './components/Header.vue';
 import Balance from './components/Balance.vue';
-import IncomeExpenses from './components/IncomeExpenses.vue';
+// import IncomeExpenses from './components/IncomeExpenses.vue';
 import TransactionList from './components/TransactionList.vue';
 import AddTransaction from './components/AddTransaction.vue';
 import { ref, computed, onMounted } from 'vue';
@@ -48,13 +48,13 @@ const total = computed(() =>{
 
 
 
-// Get total2
+// Get cashtotal          ////////////////////////////////////////////////////
 
-// const total2 = computed(() =>{
-//   return transactions.value.reduce((acc, transaction) => {
-//     return acc + transaction.total2;
-//   }, 0);
-// });
+const cashtotal = computed(() =>{
+  return transactions.value.reduce((acc, transaction) => {
+    return acc + transaction.amount1;
+  }, 0);
+});
 
 
 // Get income
@@ -86,7 +86,8 @@ const handleTransactionSubmitted = (transactionData) => {
   transactions.value.push({
     id: generateUniqueId(),
     text: transactionData.text,
-    amount: transactionData.amount,
+    amount: transactionData.amount ? transactionData.amount : 0,   ////////////////////////////////
+    amount1: transactionData.amount1 ? transactionData.amount1 : 0,   ////////////////////////////////
     date: transactionData.date
   });
 
@@ -95,6 +96,7 @@ const handleTransactionSubmitted = (transactionData) => {
     toast.success('Transaction added')
     
 };
+
 
 
 // Generate unique ID

@@ -23,6 +23,7 @@ import { useToast } from 'vue-toastification';
 
 const text = ref('');
 const amount = ref('');
+const amount1 = ref('');                       ////////////////////
 const toast = useToast();
 const emit = defineEmits(['transactionSubmitted']);
 
@@ -38,25 +39,51 @@ const onSubmit = () => {
     toast.error('Both fiels must be filled');
     return;
   }
-  const transactionData = {
-    text: text.value,
-    amount: parseFloat(amount.value),
-    date: new Date().toLocaleString('en-US', {
-    hour12: true,
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit'
-  }), // 12-hour format with AM/PM
+  if (!text.value || !amount.value) {
+    toast.error('Both fields must be filled');
+    return;
+  }
 
-  };
- 
+  let transactionData;
 
-emit('transactionSubmitted', transactionData);
+  if (text.value === "cash on hand" || text.value === "CASH ON HAND") {
+    transactionData = {
+      text: text.value,
+      amount1: parseFloat(amount.value),
+      date: new Date().toLocaleString('en-US', {
+        hour12: true,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      })
+    };
+  } else {
+    
+
+    transactionData = {
+      text: text.value,
+      amount: parseFloat(amount.value),
+      date: new Date().toLocaleString('en-US', {
+        hour12: true,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      })
+    };
+  }
+
+  emit('transactionSubmitted', transactionData);
 
   text.value = '';
   amount.value = '';
+
+
+
 };
 </script>

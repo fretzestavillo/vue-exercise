@@ -6,6 +6,7 @@
            <span> {{ transaction.text }}</span>          
            <span> {{ transaction.date }}</span>
            <span> {{ transaction.amount }}</span>
+           <span> {{ transaction.amount1 }}</span>                                        
            <button @click="deleteTransaction(transaction.id)" class="delete-btn">x</button>
         </li> 
         </ul>

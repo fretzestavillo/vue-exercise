@@ -6,7 +6,7 @@
         </div>
         <div>
           <h4>Cash on Hand</h4>
-          <p id="balance" >{{ total }}</p>
+          <p id="balance" >{{ cashtotal }}</p>
         </div>
       </div>
 </template>
@@ -25,6 +25,13 @@ const props = defineProps({
     type: Number,
     required: true,
    },
+   cashtotal: {
+    type: Number,
+    required: true,
+   },
    
 });
+
+
+
 </script>
