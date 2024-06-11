@@ -1,7 +1,19 @@
 <template>
-  <h4>Your Balance</h4>
-  <h1 id="balance">{{ total }}</h1>
+ <div class="inc-exp-container">
+        <div>
+          <h4>Your Balance</h4>
+          <p id="balance" >{{ total }}</p>
+        </div>
+        <div>
+          <h4>Cash on Hand</h4>
+          <p id="balance" >{{ total }}</p>
+        </div>
+      </div>
 </template>
+
+
+
+
 
 
 

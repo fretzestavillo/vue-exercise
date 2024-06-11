@@ -25,6 +25,17 @@ body {
   width: 400px;
 }
 
+h2 {
+  background-color: #90e0eb;
+  box-shadow: var(--box-shadow);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  font-size: 45px;
+}
+
+
 h1 {
   letter-spacing: 1px;
   margin: 0;

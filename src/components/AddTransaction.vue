@@ -31,6 +31,8 @@ const emit = defineEmits(['transactionSubmitted']);
 
 
 
+
+
 const onSubmit = () => {
   if(!text.value || !amount.value){
     toast.error('Both fiels must be filled');
@@ -39,8 +41,19 @@ const onSubmit = () => {
   const transactionData = {
     text: text.value,
     amount: parseFloat(amount.value),
+    date: new Date().toLocaleString('en-US', {
+    hour12: true,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  }), // 12-hour format with AM/PM
+
   };
-  
+ 
+
 emit('transactionSubmitted', transactionData);
 
   text.value = '';

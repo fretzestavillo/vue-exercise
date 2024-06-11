@@ -1,3 +1,3 @@
 <template>
-  <h2>Expense Tracker</h2>
+  <h2>GCash Transaction</h2>
 </template>

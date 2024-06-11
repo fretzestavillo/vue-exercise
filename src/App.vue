@@ -1,7 +1,7 @@
 <template>
   <Header/>
   <div class="container">
-    <Balance :total="+total"/>
+    <Balance :total="+total" />
     <IncomeExpenses :income="+income" :expenses="+expenses"/>
     <TransactionList :transactions="transactions"
     @transactionDeleted="handleTransactionDeleted" />
@@ -37,15 +37,6 @@ onMounted(() => {
 
 
 
-
-
-
-  // { id: 1, text: 'Flower', amount: -19.99 },
-  // { id: 2, text: 'Salary', amount: 299.97 },
-  // { id: 3, text: 'Book', amount: -10 },
-  // { id: 4, text: 'Camera', amount: 150 },
-
-
 // Get total
 
 const total = computed(() =>{
@@ -53,6 +44,17 @@ const total = computed(() =>{
     return acc + transaction.amount;
   }, 0);
 });
+
+
+
+
+// Get total2
+
+// const total2 = computed(() =>{
+//   return transactions.value.reduce((acc, transaction) => {
+//     return acc + transaction.total2;
+//   }, 0);
+// });
 
 
 // Get income
@@ -84,7 +86,8 @@ const handleTransactionSubmitted = (transactionData) => {
   transactions.value.push({
     id: generateUniqueId(),
     text: transactionData.text,
-    amount: transactionData.amount
+    amount: transactionData.amount,
+    date: transactionData.date
   });
 
     saveTransactionsToLocalStorage();
