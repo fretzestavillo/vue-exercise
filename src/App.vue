@@ -16,7 +16,7 @@
 
 import Header from './components/Header.vue';
 import Balance from './components/Balance.vue';
-// import IncomeExpenses from './components/IncomeExpenses.vue';
+import IncomeExpenses from './components/IncomeExpenses.vue';
 import TransactionList from './components/TransactionList.vue';
 import AddTransaction from './components/AddTransaction.vue';
 import { ref, computed, onMounted } from 'vue';
@@ -50,10 +50,6 @@ const total = computed(() =>{
 
 
 
-/////////////////////////////
-   
-
-
 
 
 // Get cash on hand total    
@@ -81,6 +77,25 @@ const cashtotal2 = computed(() => {
   }, 0);
 });
 
+
+// Get income
+
+const income = computed( () => {
+  return transactions.value
+  .filter((transaction) => transaction.amount > 0)
+  .reduce((acc, transaction)=>{
+    return acc + (transaction.amount * 0.02);
+  }, 0)
+    .toFixed(2);
+});
+
+
+
+
+
+
+
+
 // get the over all total of cash on hand
 let cashtotal = computed(() => {
   return cashtotal1.value + cashtotal2.value;
@@ -89,18 +104,6 @@ let cashtotal = computed(() => {
 
 
 
-//////////////////////////////////
-
-// Get income
-
-const income = computed( () => {
-  return transactions.value
-  .filter((transaction) => transaction.amount > 0)
-  .reduce((acc, transaction)=>{
-    return acc + transaction.amount;
-  }, 0)
-    .toFixed(2);
-});
 
 
 // Get expenses

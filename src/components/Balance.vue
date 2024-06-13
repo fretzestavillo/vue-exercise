@@ -34,14 +34,4 @@ const props = defineProps({
    },
    
 });
-
-
-
-
-
-
-
-
-
-
 </script>
