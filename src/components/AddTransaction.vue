@@ -48,7 +48,7 @@ const onSubmit = () => {
 
   if (text.value === "cash on hand" || text.value === "CASH ON HAND") {
     transactionData = {
-      text: text.value,
+      text: text.value.toLowerCase(),
       amount1: parseFloat(amount.value),
       date: new Date().toLocaleString('en-US', {
         hour12: true,
@@ -64,7 +64,7 @@ const onSubmit = () => {
     
 
     transactionData = {
-      text: text.value,
+      text: text.value.toLowerCase(),
       amount: parseFloat(amount.value),
       date: new Date().toLocaleString('en-US', {
         hour12: true,
