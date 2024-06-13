@@ -48,14 +48,48 @@ const total = computed(() =>{
 
 
 
-// Get cashtotal          ////////////////////////////////////////////////////
 
-const cashtotal = computed(() =>{
+
+/////////////////////////////
+   
+
+
+
+
+// Get cash on hand total    
+const cashtotal1 = computed(() =>{
   return transactions.value.reduce((acc, transaction) => {
     return acc + transaction.amount1;
   }, 0);
 });
 
+
+
+// get cash on hand total when adding gcash balance and the cash on hand total would be decrease by 2%    
+const cashtotal2 = computed(() => {
+  return transactions.value.reduce((acc, transaction) => {
+    if (transaction.amount > 0) {
+      // Calculate the adjusted amount to subtract from transaction.amount1
+      const adjustedAmount1 = transaction.amount - (transaction.amount * 0.02); // Assuming 2% deduction
+
+      // Subtract adjustedAmount1 from acc
+      return acc - adjustedAmount1;
+    } else {
+      // If transaction.amount is negative or zero, do not deduct from acc
+      return acc;
+    }
+  }, 0);
+});
+
+// get the over all total of cash on hand
+let cashtotal = computed(() => {
+  return cashtotal1.value + cashtotal2.value;
+});
+
+
+
+
+//////////////////////////////////
 
 // Get income
 
@@ -86,8 +120,8 @@ const handleTransactionSubmitted = (transactionData) => {
   transactions.value.push({
     id: generateUniqueId(),
     text: transactionData.text,
-    amount: transactionData.amount ? transactionData.amount : 0,   ////////////////////////////////
-    amount1: transactionData.amount1 ? transactionData.amount1 : 0,   ////////////////////////////////
+    amount: transactionData.amount ? transactionData.amount : 0,   
+    amount1: transactionData.amount1 ? transactionData.amount1 : 0,   
     date: transactionData.date
   });
 
