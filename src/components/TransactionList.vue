@@ -1,7 +1,8 @@
 <template>
   <h3>History</h3>
       <ul id="list" class="list">
-      <li v-for="transaction in filteredTransactions" :key="transaction.id" :class="transaction.amount < 0 ? 'minus' : 'plus'">
+      <li v-for="transaction in filteredTransactions" :key="transaction.id" :class="(transaction.amount <= 0 || transaction.amount1 <= 0) ? 'minus' : 'plus'">
+
             <span v-if="transaction.text">{{ transaction.text }}</span>
             <span v-if="transaction.amount !== undefined">{{ transaction.amount }}</span>
             <span v-if="transaction.amount1 !== undefined">{{ transaction.amount1 }}</span>     
@@ -15,7 +16,7 @@
 
 <script setup>
 import { defineProps } from 'vue';
-import { computed } from 'vue'; ///////////////////////////////////////
+import { computed } from 'vue'; 
 
 
 const emit = defineEmits(['transactionDeleted'])
