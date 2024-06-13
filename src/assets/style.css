@@ -26,13 +26,16 @@ body {
 }
 
 h2 {
-  background-color: #90e0eb;
+  background-color: #111245;
+  color: white;
+  font-family: 'Lato', sans-serif;
   box-shadow: var(--box-shadow);
   padding: 20px;
   display: flex;
   justify-content: space-between;
   margin: 20px 0;
   font-size: 45px;
+  border-radius: 20px;
 }
 
 
