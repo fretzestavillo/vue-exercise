@@ -1,7 +1,7 @@
 <template>
  <div class="inc-exp-container">
         <div>
-          <h4>Your Balance</h4>
+          <h4>GCash Balance</h4>
           <p id="balance" >{{ total }}</p>
         </div>
         <div>
@@ -31,6 +31,10 @@ const props = defineProps({
    },
    
 });
+
+
+
+
 
 
 
