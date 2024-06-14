@@ -13,6 +13,8 @@
         </div>
         <button class="btn">Add transaction</button>
       </form>
+       <button class="btn1">Save</button>
+        <button class="btn2">Delete</button>
 </template>
 
 <script setup>
