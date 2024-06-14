@@ -49,6 +49,10 @@ const total = computed(() =>{
 
 
 
+// get the over all total of cash on hand
+let cashtotal = computed(() => {
+  return cashtotal1.value + cashtotal2.value;
+});
 
 
 
@@ -62,12 +66,19 @@ const cashtotal1 = computed(() =>{
 
 
 
-// get cash on hand total when adding gcash balance and the cash on hand total would be decrease by 2%    
 const cashtotal2 = computed(() => {
   return transactions.value.reduce((acc, transaction) => {
     if (transaction.amount > 0) {
-      // Calculate the adjusted amount to subtract from transaction.amount1
-      const adjustedAmount1 = transaction.amount - (transaction.amount * 0.02); // Assuming 2% deduction
+      let adjustedAmount1;
+      if (transaction.amount < 500) {
+        // Deduct 10 if amount is less than 500
+        adjustedAmount1 = transaction.amount - 10;
+      } else {
+        // Calculate deduction based on 1000 - 20 rule
+        const units = Math.ceil(transaction.amount / 500);
+        const deduction = units * 10;
+        adjustedAmount1 = transaction.amount - deduction;
+      }
 
       // Subtract adjustedAmount1 from acc
       return acc - adjustedAmount1;
@@ -77,6 +88,25 @@ const cashtotal2 = computed(() => {
     }
   }, 0);
 });
+
+
+
+
+// // get cash on hand total when adding gcash balance and the cash on hand total would be decrease by 2%    
+// const cashtotal2 = computed(() => {
+//   return transactions.value.reduce((acc, transaction) => {
+//     if (transaction.amount > 0) {
+//       // Calculate the adjusted amount to subtract from transaction.amount1
+//       const adjustedAmount1 = transaction.amount - (transaction.amount - 10); // Assuming 2% deduction
+
+//       // Subtract adjustedAmount1 from acc
+//       return acc - adjustedAmount1;
+//     } else {
+//       // If transaction.amount is negative or zero, do not deduct from acc
+//       return acc;
+//     }
+//   }, 0);
+// });
 
 
 // Get income
@@ -97,10 +127,6 @@ const income = computed( () => {
 
 
 
-// get the over all total of cash on hand
-let cashtotal = computed(() => {
-  return cashtotal1.value + cashtotal2.value;
-});
 
 
 
