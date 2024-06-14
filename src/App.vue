@@ -3,9 +3,10 @@
   <div class="container">
     <Balance :total="+total" :cashtotal="+cashtotal" />
     <IncomeExpenses :income="+income" :expenses="+expenses"/>
-    <AddTransaction @transactionSubmitted="handleTransactionSubmitted"  />
-    <TransactionList :transactions="transactions"
-    @transactionDeleted="handleTransactionDeleted" />
+    <AddTransaction @transactionSubmitted="handleTransactionSubmitted"    />  
+     <Delete  />
+    <TransactionList :transactions="transactions" @transactionDeleted="handleTransactionDeleted" />
+   
     
     
   </div>
@@ -15,11 +16,15 @@
 
 <script setup>
 
+
+// @allTransactionDeleted="handleAllTransactionDeleted"
+
 import Header from './components/Header.vue';
 import Balance from './components/Balance.vue';
 import IncomeExpenses from './components/IncomeExpenses.vue';
 import TransactionList from './components/TransactionList.vue';
 import AddTransaction from './components/AddTransaction.vue';
+import Delete from './components/Delete.vue';
 import { ref, computed, onMounted } from 'vue';
 
 import { useToast } from 'vue-toastification';
@@ -88,38 +93,6 @@ const cashtotal2 = computed(() => {
     }
   }, 0);
 });
-
-
-
-
-// // get cash on hand total when adding gcash balance and the cash on hand total would be decrease by 2%    
-// const cashtotal2 = computed(() => {
-//   return transactions.value.reduce((acc, transaction) => {
-//     if (transaction.amount > 0) {
-//       // Calculate the adjusted amount to subtract from transaction.amount1
-//       const adjustedAmount1 = transaction.amount - (transaction.amount - 10); // Assuming 2% deduction
-
-//       // Subtract adjustedAmount1 from acc
-//       return acc - adjustedAmount1;
-//     } else {
-//       // If transaction.amount is negative or zero, do not deduct from acc
-//       return acc;
-//     }
-//   }, 0);
-// });
-
-
-// Get income
-
-// const income = computed( () => {
-//   return transactions.value
-//   .filter((transaction) => transaction.amount > 0)
-//   .reduce((acc, transaction)=>{
-//     return acc + (transaction.amount * 0.02);
-//   }, 0)
-//     .toFixed(2);
-// });
-
 
 
 
@@ -200,6 +173,20 @@ const handleTransactionDeleted = (id) => {
 
   toast.success('Transaction deleted');
 };
+
+
+//Delete All transacation
+
+// const handleAllTransactionDeleted = () => {
+//   transactions.value = []; // Remove all transactions
+
+//   saveTransactionsToLocalStorage();
+
+//   toast.success('All transactions deleted');
+// };
+
+
+
 
 
 // Save to localstorage
