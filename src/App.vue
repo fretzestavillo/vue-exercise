@@ -4,7 +4,7 @@
     <Balance :total="+total" :cashtotal="+cashtotal" />
     <IncomeExpenses :income="+income" :expenses="+expenses"/>
     <AddTransaction @transactionSubmitted="handleTransactionSubmitted"    />  
-     <Delete  />
+    <Delete :transactions="transactions" @allTransactionDeleted="handleAllTransactionDeleted" />
     <TransactionList :transactions="transactions" @transactionDeleted="handleTransactionDeleted" />
    
     
@@ -17,16 +17,13 @@
 <script setup>
 
 
-// @allTransactionDeleted="handleAllTransactionDeleted"
-
-import Header from './components/Header.vue';
-import Balance from './components/Balance.vue';
 import IncomeExpenses from './components/IncomeExpenses.vue';
 import TransactionList from './components/TransactionList.vue';
 import AddTransaction from './components/AddTransaction.vue';
+import Header from './components/Header.vue';
+import Balance from './components/Balance.vue';
 import Delete from './components/Delete.vue';
 import { ref, computed, onMounted } from 'vue';
-
 import { useToast } from 'vue-toastification';
 
 const toast = useToast();
@@ -177,13 +174,16 @@ const handleTransactionDeleted = (id) => {
 
 //Delete All transacation
 
-// const handleAllTransactionDeleted = () => {
-//   transactions.value = []; // Remove all transactions
+const handleAllTransactionDeleted = () => {
 
-//   saveTransactionsToLocalStorage();
+console.log(transactions)
+  transactions.value = []; // Remove all transactions
 
-//   toast.success('All transactions deleted');
-// };
+  saveTransactionsToLocalStorage();
+
+  toast.warning('All transactions deleted');
+
+};
 
 
 
