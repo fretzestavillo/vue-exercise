@@ -111,17 +111,38 @@ const cashtotal2 = computed(() => {
 
 // Get income
 
-const income = computed( () => {
-  return transactions.value
-  .filter((transaction) => transaction.amount > 0)
-  .reduce((acc, transaction)=>{
-    return acc + (transaction.amount * 0.02);
-  }, 0)
-    .toFixed(2);
+// const income = computed( () => {
+//   return transactions.value
+//   .filter((transaction) => transaction.amount > 0)
+//   .reduce((acc, transaction)=>{
+//     return acc + (transaction.amount * 0.02);
+//   }, 0)
+//     .toFixed(2);
+// });
+
+
+
+
+function calculateDeduction(transactionAmount) {
+  if (transactionAmount < 500) {
+    return 10; // Deduct 10 if amount is less than 500
+  } else {
+    const units = Math.ceil(transactionAmount / 500);
+    return units * 10; // Calculate deduction based on 1000 - 20 rule
+  }
+}
+
+const income = computed(() => {
+  return transactions.value.reduce((acc, transaction) => {
+    if (transaction.amount > 0) {
+      const deduction = calculateDeduction(transaction.amount);
+      return acc + deduction;
+    } else {
+      // If transaction.amount is negative or zero, do not add to acc
+      return acc;
+    }
+  }, 0);
 });
-
-
-
 
 
 
