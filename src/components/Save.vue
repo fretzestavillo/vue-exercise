@@ -1,5 +1,5 @@
 <template>
-        <button @click="deleteAll(transactions)" class="btn2">Delete</button>
+<button @click="save(transactions)" class="btn1">Save and Export to Excel</button>      
 </template>
 
 
@@ -20,10 +20,12 @@ const props = defineProps({
    }
 });
 
-const emit = defineEmits(['allTransactionDeleted']);
-const deleteAll = (transactions) => {
-emit('allTransactionDeleted', transactions)
+const emit = defineEmits(['saveAndExport']);
+const save = (transactions) => {
+emit('saveAndExport', transactions)
 };
+
+
 
 
 </script>

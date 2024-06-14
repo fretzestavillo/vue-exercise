@@ -4,6 +4,7 @@
     <Balance :total="+total" :cashtotal="+cashtotal" />
     <IncomeExpenses :income="+income" :expenses="+expenses"/>
     <AddTransaction @transactionSubmitted="handleTransactionSubmitted"    />  
+    <Save :transactions="transactions" @saveAndExport="handleSaveAndExport"  />
     <Delete :transactions="transactions" @allTransactionDeleted="handleAllTransactionDeleted" />
     <TransactionList :transactions="transactions" @transactionDeleted="handleTransactionDeleted" />
    
@@ -16,19 +17,24 @@
 
 <script setup>
 
-
 import IncomeExpenses from './components/IncomeExpenses.vue';
 import TransactionList from './components/TransactionList.vue';
 import AddTransaction from './components/AddTransaction.vue';
 import Header from './components/Header.vue';
 import Balance from './components/Balance.vue';
 import Delete from './components/Delete.vue';
+import Save from './components/Save.vue';
 import { ref, computed, onMounted } from 'vue';
 import { useToast } from 'vue-toastification';
+import * as XLSX from 'xlsx';
+import { invalidateTypeCache } from 'vue/compiler-sfc';
+
+
+
 
 const toast = useToast();
-
 const transactions = ref([]);
+
 
 onMounted(() => {
   const savedTransactions = JSON.parse(localStorage.getItem('transactions'));
@@ -176,13 +182,52 @@ const handleTransactionDeleted = (id) => {
 
 const handleAllTransactionDeleted = () => {
 
-console.log(transactions)
   transactions.value = []; // Remove all transactions
 
   saveTransactionsToLocalStorage();
 
   toast.warning('All transactions deleted');
 
+};
+
+
+
+
+
+
+
+
+
+
+
+const data = ref([]);
+
+const handleSaveAndExport = () => {
+
+   data.value = [];
+
+  transactions.value.forEach(transaction => {
+    data.value.push({
+      Date: transaction.date,
+      Name: transaction.text,
+      GCashAmount: transaction.amount,
+      CashOnhandAmount: transaction.amount1,
+      GCashBalance: total,
+      CashOnHand: cashtotal,
+      Expenses: expenses,
+      Income: income,
+
+    });
+  });
+
+
+  // Step 2: Prepare data for Excel export
+  const ws = XLSX.utils.json_to_sheet(data.value);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Transactions');
+
+  // Step 3: Generate and save Excel file
+  XLSX.writeFile(wb, 'transactions.xlsx');
 };
 
 
