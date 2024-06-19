@@ -3,8 +3,8 @@
   <div class="container">
     <Balance :total="+total" :cashtotal="+cashtotal" />
     <IncomeExpenses :income="+income" :expenses="+expenses"/>
-    <AddTransaction @transactionSubmitted="handleTransactionSubmitted"    />  
-    <Save :transactions="transactions" @saveAndExport="handleSaveAndExport"  />
+    <AddTransaction @transactionSubmitted="handleTransactionSubmitted"    /> 
+    <Save :exelList="exelList" @saveAndExport="handleSaveAndExport" />
     <Delete :transactions="transactions" @allTransactionDeleted="handleAllTransactionDeleted" />
     <TransactionList :transactions="transactions" @transactionDeleted="handleTransactionDeleted" />
    
@@ -34,6 +34,7 @@ import { invalidateTypeCache } from 'vue/compiler-sfc';
 
 const toast = useToast();
 const transactions = ref([]);
+const exelList = ref([]);
 
 
 onMounted(() => {
@@ -46,8 +47,58 @@ onMounted(() => {
 
 
 
-// Get total
 
+
+
+// Add transaction
+
+
+const handleTransactionSubmitted = (transactionData) => {
+  const newTransaction = {
+    id: generateUniqueId(),
+    text: transactionData.text,
+    amount: transactionData.amount ? transactionData.amount : 0,   
+    amount1: transactionData.amount1 ? transactionData.amount1 : 0,   
+    date: transactionData.date
+  };
+
+   // Push newTransaction into transactions.value
+  transactions.value.push(newTransaction);
+
+  // Alternatively, you can also push into exelList.value if needed
+   exelList.value.push(newTransaction);
+  // exelList.value = [...exelList.value, newTransaction];
+
+  saveTransactionsToLocalStorage();
+
+  toast.success('Transaction added');
+
+};
+
+
+
+
+
+
+// const handleTransactionSubmitted = (transactionData) => {
+//   transactions.value.push({
+//     id: generateUniqueId(),
+//     text: transactionData.text,
+//     amount: transactionData.amount ? transactionData.amount : 0,   
+//     amount1: transactionData.amount1 ? transactionData.amount1 : 0,   
+//     date: transactionData.date
+//   });
+
+//     saveTransactionsToLocalStorage();
+
+//     toast.success('Transaction added')
+    
+// };
+
+
+
+
+// Get GCash total
 const total = computed(() =>{
   return transactions.value.reduce((acc, transaction) => {
     return acc + transaction.amount;
@@ -108,6 +159,9 @@ function calculateDeduction(transactionAmount) {
   }
 }
 
+
+// Get Income
+
 const income = computed(() => {
   return transactions.value.reduce((acc, transaction) => {
     if (transaction.amount > 0) {
@@ -120,15 +174,7 @@ const income = computed(() => {
   }, 0);
 });
 
-
-
-
-
-
-
-
-
-
+  
 
 // Get expenses
 
@@ -137,26 +183,14 @@ const expenses = computed( () =>{
   .filter((transaction) => transaction.amount < 0)
   .reduce((acc, transaction)=>{
     return acc + transaction.amount;
+
   }, 0)
     .toFixed(2);
 });
 
-// Add transaction
 
-const handleTransactionSubmitted = (transactionData) => {
-  transactions.value.push({
-    id: generateUniqueId(),
-    text: transactionData.text,
-    amount: transactionData.amount ? transactionData.amount : 0,   
-    amount1: transactionData.amount1 ? transactionData.amount1 : 0,   
-    date: transactionData.date
-  });
 
-    saveTransactionsToLocalStorage();
 
-    toast.success('Transaction added')
-    
-};
 
 
 
@@ -194,11 +228,7 @@ const handleAllTransactionDeleted = () => {
 
 
 
-
-
-
-
-
+// Save and export
 
 const data = ref([]);
 
@@ -206,16 +236,12 @@ const handleSaveAndExport = () => {
 
    data.value = [];
 
-  transactions.value.forEach(transaction => {
+  exelList.value.forEach(i => {
     data.value.push({
-      Date: transaction.date,
-      Name: transaction.text,
-      GCashAmount: transaction.amount,
-      CashOnhandAmount: transaction.amount1,
-      GCashBalance: total,
-      CashOnHand: cashtotal,
-      Expenses: expenses,
-      Income: income,
+      Date: i.date,
+      Name: i.text,
+      GCashAmount: i.amount,
+      CashOnhandAmount: i.amount1,
 
     });
   });
@@ -229,6 +255,45 @@ const handleSaveAndExport = () => {
   // Step 3: Generate and save Excel file
   XLSX.writeFile(wb, 'transactions.xlsx');
 };
+
+
+
+
+
+
+
+
+// // Save and export
+
+// const data = ref([]);
+
+// const handleSaveAndExport = () => {
+
+//    data.value = [];
+
+//   transactions.value.forEach(transaction => {
+//     data.value.push({
+//       Date: transaction.date,
+//       Name: transaction.text,
+//       GCashAmount: transaction.amount,
+//       CashOnhandAmount: transaction.amount1,
+//       GCashBalance: total,
+//       CashOnHand: cashtotal,
+//       Expenses: expenses,
+//       Income: income,
+
+//     });
+//   });
+
+
+//   // Step 2: Prepare data for Excel export
+//   const ws = XLSX.utils.json_to_sheet(data.value);
+//   const wb = XLSX.utils.book_new();
+//   XLSX.utils.book_append_sheet(wb, ws, 'Transactions');
+
+//   // Step 3: Generate and save Excel file
+//   XLSX.writeFile(wb, 'transactions.xlsx');
+// };
 
 
 

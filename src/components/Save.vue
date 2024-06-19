@@ -1,5 +1,5 @@
 <template>
-<button @click="save(transactions)" class="btn1">Save and Export to Excel</button>      
+<button @click="save(exelList)" class="btn1">Save and Export to Excel</button>      
 </template>
 
 
@@ -14,15 +14,15 @@ import { ref } from 'vue';
 
 
 const props = defineProps({
-   transactions :{
-    type: Array,
+   exelList :{
+   type: Array,
     required: true,
    }
 });
 
 const emit = defineEmits(['saveAndExport']);
-const save = (transactions) => {
-emit('saveAndExport', transactions)
+const save = (exelList) => {
+emit('saveAndExport', exelList)
 };
 
 
