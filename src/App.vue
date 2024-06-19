@@ -7,8 +7,6 @@
     <Save :exelList="exelList" @saveAndExport="handleSaveAndExport" />
     <Delete :transactions="transactions" @allTransactionDeleted="handleAllTransactionDeleted" />
     <TransactionList :transactions="transactions" @transactionDeleted="handleTransactionDeleted" />
-   
-    
     
   </div>
 </template>
@@ -54,9 +52,6 @@ onMounted(() => {
 
 
 
-
-
-
 // Add transaction
 
 
@@ -87,16 +82,6 @@ const handleTransactionSubmitted = (transactionData) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
 ////////////this code is trying to insert object and push it into array exelList
 
 
@@ -107,15 +92,6 @@ const total = computed(() =>{
     return acc + transaction.amount;
   }, 0);
 });
-
-
-
-
-
-
-
-
-
 
 
 
@@ -207,121 +183,6 @@ const expenses = computed( () =>{
 
 
 
-
-
-
-
-
-
-
-
-
-
-// // Get GCash total
-// const total = computed(() =>{
-//   return transactions.value.reduce((acc, transaction) => {
-//     return acc + transaction.amount;
-//   }, 0);
-// });
-
-
-
-
-// // get the over all total of cash on hand
-// let cashtotal = computed(() => {
-//   return cashtotal1.value + cashtotal2.value;
-// });
-
-
-
-
-// // Get cash on hand total    
-// const cashtotal1 = computed(() =>{
-//   return transactions.value.reduce((acc, transaction) => {
-//     return acc + transaction.amount1;
-//   }, 0);
-// });
-
-
-
-// const cashtotal2 = computed(() => {
-//   return transactions.value.reduce((acc, transaction) => {
-//     if (transaction.amount > 0) {
-//       let adjustedAmount1;
-//       if (transaction.amount < 500) {
-//         // Deduct 10 if amount is less than 500
-//         adjustedAmount1 = transaction.amount - 10;
-//       } else {
-//         // Calculate deduction based on 1000 - 20 rule
-//         const units = Math.ceil(transaction.amount / 500);
-//         const deduction = units * 10;
-//         adjustedAmount1 = transaction.amount - deduction;
-//       }
-
-//       // Subtract adjustedAmount1 from acc
-//       return acc - adjustedAmount1;
-//     } else {
-//       // If transaction.amount is negative or zero, do not deduct from acc
-//       return acc;
-//     }
-//   }, 0);
-// });
-
-
-
-// function calculateDeduction(transactionAmount) {
-//   if (transactionAmount < 500) {
-//     return 10; // Deduct 10 if amount is less than 500
-//   } else {
-//     const units = Math.ceil(transactionAmount / 500);
-//     return units * 10; // Calculate deduction based on 1000 - 20 rule
-//   }
-// }
-
-
-
-
-// // Get Income
-
-// const income = computed(() => {
-//   return transactions.value.reduce((acc, transaction) => {
-//     if (transaction.amount > 0) {
-//       const deduction = calculateDeduction(transaction.amount);
-//       return acc + deduction;
-//     } else {
-//       // If transaction.amount is negative or zero, do not add to acc
-//       return acc;
-//     }
-//   }, 0);
-// });
-
-  
-
-
-// // Get expenses
-
-// const expenses = computed( () =>{
-//   return transactions.value
-//   .filter((transaction) => transaction.amount < 0)
-//   .reduce((acc, transaction)=>{
-//     return acc + transaction.amount;
-
-//   }, 0)
-//     .toFixed(2);
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Generate unique ID
 
 const generateUniqueId = () => {
@@ -382,11 +243,7 @@ const handleSaveAndExport = () => {
       Date: i.date,
 
     });
-    
-      
 
-   
-    
   });
 
 
@@ -398,47 +255,6 @@ const handleSaveAndExport = () => {
   // Step 3: Generate and save Excel file
   XLSX.writeFile(wb, 'transactions.xlsx');
 };
-
-
-
-
-
-
-
-
-
-// // Save and export
-
-// const data = ref([]);
-
-// const handleSaveAndExport = () => {
-
-//    data.value = [];
-
-//   transactions.value.forEach(transaction => {
-//     data.value.push({
-//       Date: transaction.date,
-//       Name: transaction.text,
-//       GCashAmount: transaction.amount,
-//       CashOnhandAmount: transaction.amount1,
-//       GCashBalance: total,
-//       CashOnHand: cashtotal,
-//       Expenses: expenses,
-//       Income: income,
-
-//     });
-//   });
-
-
-//   // Step 2: Prepare data for Excel export
-//   const ws = XLSX.utils.json_to_sheet(data.value);
-//   const wb = XLSX.utils.book_new();
-//   XLSX.utils.book_append_sheet(wb, ws, 'Transactions');
-
-//   // Step 3: Generate and save Excel file
-//   XLSX.writeFile(wb, 'transactions.xlsx');
-// };
-
 
 
 
