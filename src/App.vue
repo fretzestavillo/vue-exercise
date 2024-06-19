@@ -43,6 +43,13 @@ onMounted(() => {
   if(savedTransactions){
     transactions.value = savedTransactions;
   }
+
+  const savedTransactions1 = JSON.parse(localStorage.getItem('transactions'));
+
+  if(savedTransactions1){
+    exelList.value = savedTransactions1;
+  }
+
 })
 
 
@@ -70,6 +77,7 @@ const handleTransactionSubmitted = (transactionData) => {
   // exelList.value = [...exelList.value, newTransaction];
 
   saveTransactionsToLocalStorage();
+  saveTransactionsToLocalStorage1();
 
   toast.success('Transaction added');
 
@@ -80,21 +88,16 @@ const handleTransactionSubmitted = (transactionData) => {
 
 
 
-// const handleTransactionSubmitted = (transactionData) => {
-//   transactions.value.push({
-//     id: generateUniqueId(),
-//     text: transactionData.text,
-//     amount: transactionData.amount ? transactionData.amount : 0,   
-//     amount1: transactionData.amount1 ? transactionData.amount1 : 0,   
-//     date: transactionData.date
-//   });
 
-//     saveTransactionsToLocalStorage();
 
-//     toast.success('Transaction added')
-    
-// };
 
+
+
+
+
+
+
+////////////this code is trying to insert object and push it into array exelList
 
 
 
@@ -104,6 +107,14 @@ const total = computed(() =>{
     return acc + transaction.amount;
   }, 0);
 });
+
+
+
+
+
+
+
+
 
 
 
@@ -160,6 +171,8 @@ function calculateDeduction(transactionAmount) {
 }
 
 
+
+
 // Get Income
 
 const income = computed(() => {
@@ -176,6 +189,7 @@ const income = computed(() => {
 
   
 
+
 // Get expenses
 
 const expenses = computed( () =>{
@@ -187,6 +201,120 @@ const expenses = computed( () =>{
   }, 0)
     .toFixed(2);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // Get GCash total
+// const total = computed(() =>{
+//   return transactions.value.reduce((acc, transaction) => {
+//     return acc + transaction.amount;
+//   }, 0);
+// });
+
+
+
+
+// // get the over all total of cash on hand
+// let cashtotal = computed(() => {
+//   return cashtotal1.value + cashtotal2.value;
+// });
+
+
+
+
+// // Get cash on hand total    
+// const cashtotal1 = computed(() =>{
+//   return transactions.value.reduce((acc, transaction) => {
+//     return acc + transaction.amount1;
+//   }, 0);
+// });
+
+
+
+// const cashtotal2 = computed(() => {
+//   return transactions.value.reduce((acc, transaction) => {
+//     if (transaction.amount > 0) {
+//       let adjustedAmount1;
+//       if (transaction.amount < 500) {
+//         // Deduct 10 if amount is less than 500
+//         adjustedAmount1 = transaction.amount - 10;
+//       } else {
+//         // Calculate deduction based on 1000 - 20 rule
+//         const units = Math.ceil(transaction.amount / 500);
+//         const deduction = units * 10;
+//         adjustedAmount1 = transaction.amount - deduction;
+//       }
+
+//       // Subtract adjustedAmount1 from acc
+//       return acc - adjustedAmount1;
+//     } else {
+//       // If transaction.amount is negative or zero, do not deduct from acc
+//       return acc;
+//     }
+//   }, 0);
+// });
+
+
+
+// function calculateDeduction(transactionAmount) {
+//   if (transactionAmount < 500) {
+//     return 10; // Deduct 10 if amount is less than 500
+//   } else {
+//     const units = Math.ceil(transactionAmount / 500);
+//     return units * 10; // Calculate deduction based on 1000 - 20 rule
+//   }
+// }
+
+
+
+
+// // Get Income
+
+// const income = computed(() => {
+//   return transactions.value.reduce((acc, transaction) => {
+//     if (transaction.amount > 0) {
+//       const deduction = calculateDeduction(transaction.amount);
+//       return acc + deduction;
+//     } else {
+//       // If transaction.amount is negative or zero, do not add to acc
+//       return acc;
+//     }
+//   }, 0);
+// });
+
+  
+
+
+// // Get expenses
+
+// const expenses = computed( () =>{
+//   return transactions.value
+//   .filter((transaction) => transaction.amount < 0)
+//   .reduce((acc, transaction)=>{
+//     return acc + transaction.amount;
+
+//   }, 0)
+//     .toFixed(2);
+// });
+
+
+
+
+
+
 
 
 
@@ -207,6 +335,7 @@ const handleTransactionDeleted = (id) => {
   transactions.value = transactions.value.filter((transaction) => transaction.id !== id);
 
   saveTransactionsToLocalStorage();
+  saveTransactionsToLocalStorage1();
 
   toast.success('Transaction deleted');
 };
@@ -219,6 +348,7 @@ const handleAllTransactionDeleted = () => {
   transactions.value = []; // Remove all transactions
 
   saveTransactionsToLocalStorage();
+  saveTransactionsToLocalStorage1();
 
   toast.warning('All transactions deleted');
 
@@ -228,7 +358,7 @@ const handleAllTransactionDeleted = () => {
 
 
 
-// Save and export
+// Save and export ////////////////////////
 
 const data = ref([]);
 
@@ -242,8 +372,13 @@ const handleSaveAndExport = () => {
       Name: i.text,
       GCashAmount: i.amount,
       CashOnhandAmount: i.amount1,
+      total: i.total,
+      cashtotal: i.cashtotal,
+      income: i.income,
+      expenses: i.expenses,
 
     });
+    
   });
 
 
@@ -255,6 +390,7 @@ const handleSaveAndExport = () => {
   // Step 3: Generate and save Excel file
   XLSX.writeFile(wb, 'transactions.xlsx');
 };
+
 
 
 
@@ -302,6 +438,11 @@ const handleSaveAndExport = () => {
 // Save to localstorage
 const saveTransactionsToLocalStorage = () => {
   localStorage.setItem('transactions', JSON.stringify(transactions.value));
+}
+
+
+const saveTransactionsToLocalStorage1 = () => {
+  localStorage.setItem('exelList', JSON.stringify(exelList.value));
 }
 
 </script>

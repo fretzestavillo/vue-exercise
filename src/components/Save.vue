@@ -1,5 +1,5 @@
 <template>
-<button @click="save(exelList)" class="btn1">Save and Export to Excel</button>      
+<button @click="save(exelList)" class="btn1">Save and Export to Excel</button>    
 </template>
 
 
@@ -13,9 +13,12 @@ import { ref } from 'vue';
 
 
 
+
+
+
 const props = defineProps({
    exelList :{
-   type: Array,
+    type: Array,
     required: true,
    }
 });
@@ -26,6 +29,6 @@ emit('saveAndExport', exelList)
 };
 
 
-
-
 </script>
+
+
