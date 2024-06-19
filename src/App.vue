@@ -368,7 +368,6 @@ const handleSaveAndExport = () => {
 
   exelList.value.forEach(i => {
     data.value.push({
-      Date: i.date,
       Name: i.text,
       GCashAmount: i.amount,
       CashOnhandAmount: i.amount1,
@@ -376,8 +375,17 @@ const handleSaveAndExport = () => {
       cashtotal: i.cashtotal,
       income: i.income,
       expenses: i.expenses,
+      total: total.value,
+      cashtotal: cashtotal.value,
+      income: income.value,
+      expenses: expenses.value,
+      Date: i.date,
 
     });
+    
+      
+
+   
     
   });
 
